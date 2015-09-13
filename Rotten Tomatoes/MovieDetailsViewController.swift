@@ -36,17 +36,24 @@ class MovieDetailsViewController: UIViewController {
             let imdbUrl = NSURL(string:"http://www.omdbapi.com/?i=tt\(imdbId)&plot=full&r=json")!
             let imdbUrlRequest = NSURLRequest(URL: imdbUrl)
             NSURLConnection.sendAsynchronousRequest(imdbUrlRequest, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
-                let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: []) as? NSDictionary
                 
-                if let responseDictionary = responseDictionary {
-                    let imageUrl = responseDictionary["Poster"] as? String
-                    if let imageUrl = imageUrl {
-                        let highResImageUrl = NSURL(string: imageUrl)!
-                        self._delay(0.5) {
-                            self.posterImageView.setImageWithURL(highResImageUrl)
+                if let _ = error {
+                    return
+                }
+                if let data = data {
+                    let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(data, options: []) as? NSDictionary
+                    
+                    if let responseDictionary = responseDictionary {
+                        let imageUrl = responseDictionary["Poster"] as? String
+                        if let imageUrl = imageUrl {
+                            let highResImageUrl = NSURL(string: imageUrl)!
+                            self._delay(0.5) {
+                                self.posterImageView.setImageWithURL(highResImageUrl)
+                            }
                         }
                     }
                 }
+
             }
         }
     }
@@ -64,16 +71,5 @@ class MovieDetailsViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		217294651BA60EC200DD7EA2 /* AlertHederCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217294641BA60EC200DD7EA2 /* AlertHederCell.swift */; };
 		2178E8071BA5255D00BE1AD1 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2178E8061BA5255D00BE1AD1 /* MovieDetailsViewController.swift */; };
 		21D747571BA4C676007084F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21D747561BA4C676007084F1 /* AppDelegate.swift */; };
 		21D7475C1BA4C676007084F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21D7475A1BA4C676007084F1 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		0F3811CE15BBE2A6D0806BA7 /* Pods_Rotten_Tomatoes.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Rotten_Tomatoes.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		12A6BE7517CEA7CFC61B5A15 /* Pods-Rotten Tomatoes.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Rotten Tomatoes.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Rotten Tomatoes/Pods-Rotten Tomatoes.debug.xcconfig"; sourceTree = "<group>"; };
+		217294641BA60EC200DD7EA2 /* AlertHederCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHederCell.swift; sourceTree = "<group>"; };
 		2178E8061BA5255D00BE1AD1 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		21D747531BA4C676007084F1 /* Rotten Tomatoes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rotten Tomatoes.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		21D747561BA4C676007084F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				21D747881BA4E7CA007084F1 /* MovieCell.swift */,
+				217294641BA60EC200DD7EA2 /* AlertHederCell.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 			files = (
 				2178E8071BA5255D00BE1AD1 /* MovieDetailsViewController.swift in Sources */,
 				21D747571BA4C676007084F1 /* AppDelegate.swift in Sources */,
+				217294651BA60EC200DD7EA2 /* AlertHederCell.swift in Sources */,
 				21D747851BA4C6BB007084F1 /* MovieViewController.swift in Sources */,
 				21D747891BA4E7CA007084F1 /* MovieCell.swift in Sources */,
 			);
