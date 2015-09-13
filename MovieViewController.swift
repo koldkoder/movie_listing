@@ -18,6 +18,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     var movies: [NSDictionary]?
     var refreshControl: UIRefreshControl!
+    var alertMessage : String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,15 +43,28 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         let url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=\(apiKey)&limit=20")!
         let request = NSURLRequest(URL: url)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
-            let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(data!, options: []) as? NSDictionary
             
-            if let responseDictionary = responseDictionary {
-                self.movies = responseDictionary["movies"] as? [NSDictionary]
-                self.movies?.shuffle()
+            if let _ = error {
+                self.alertMessage = "Newtork Error!"
                 self.tableView.reloadData()
                 self.refreshControl.endRefreshing()
                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                
+                return
             }
+            
+            if let data = data {
+                let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(data, options: []) as? NSDictionary
+                if let responseDictionary = responseDictionary {
+                    self.movies = responseDictionary["movies"] as? [NSDictionary]
+                    self.movies?.shuffle()
+                    self.alertMessage = nil
+                    self.tableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                    MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
+                }
+            }
+            
         }
     }
     
@@ -65,7 +79,6 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
 
-    @available(iOS 2.0, *)
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let movies = movies {
             return movies.count
@@ -74,8 +87,8 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     
-    @available(iOS 2.0, *)
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        print("not me!")
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         let movie = movies![indexPath.row]
         
@@ -101,6 +114,25 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         return cell
     }
+    
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let  alertHeaderCell = tableView.dequeueReusableCellWithIdentifier("AlertHeaderCell") as! AlertHederCell
+        //alertHeaderCell.backgroundColor = UIColor.cyanColor()
+        if let alertMessage = alertMessage {
+            alertHeaderCell.messageLabel.text = alertMessage
+        }
+        return alertHeaderCell
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        print(self.alertMessage)
+        if let _ = self.alertMessage {
+            return 30.0
+        }
+        return 0.0
+    }
+
     
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
