@@ -88,7 +88,6 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        print("not me!")
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         let movie = movies![indexPath.row]
         
@@ -118,19 +117,17 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let  alertHeaderCell = tableView.dequeueReusableCellWithIdentifier("AlertHeaderCell") as! AlertHederCell
-        //alertHeaderCell.backgroundColor = UIColor.cyanColor()
+        alertHeaderCell.accessoryType = UITableViewCellAccessoryType.None
+        alertHeaderCell.messageLabel.hidden = true
         if let alertMessage = alertMessage {
             alertHeaderCell.messageLabel.text = alertMessage
+            alertHeaderCell.messageLabel.hidden = false
         }
         return alertHeaderCell
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        print(self.alertMessage)
-        if let _ = self.alertMessage {
-            return 30.0
-        }
-        return 0.0
+        return 30.0
     }
 
     
