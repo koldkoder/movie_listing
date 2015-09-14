@@ -34,7 +34,7 @@ class MovieDetailsViewController: UIViewController {
         let imdbId = alternateIds?["imdb"] as? String
         if let imdbId = imdbId {
             let imdbUrl = NSURL(string:"http://www.omdbapi.com/?i=tt\(imdbId)&plot=full&r=json")!
-            let imdbUrlRequest = NSURLRequest(URL: imdbUrl)
+            let imdbUrlRequest = NSURLRequest(URL: imdbUrl,  cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
             NSURLConnection.sendAsynchronousRequest(imdbUrlRequest, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
                 
                 if let _ = error {
@@ -47,8 +47,17 @@ class MovieDetailsViewController: UIViewController {
                         let imageUrl = responseDictionary["Poster"] as? String
                         if let imageUrl = imageUrl {
                             let highResImageUrl = NSURL(string: imageUrl)!
+                            let highResImageUrlRequest = NSURLRequest(URL: highResImageUrl, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
                             self._delay(0.5) {
-                                self.posterImageView.setImageWithURL(highResImageUrl)
+                                self.posterImageView.setImageWithURLRequest(highResImageUrlRequest, placeholderImage: nil, success: { (req, res, image) -> Void in
+                                    self.posterImageView.image = image
+                                    self.posterImageView.alpha = 0.3
+                                    UIView.animateWithDuration(1, animations: { () -> Void in
+                                        self.posterImageView.alpha = 1
+                                    })
+                                    }, failure: { (req, res, err) -> Void in
+                                    NSLog("Error loading high res poster")
+                                })
                             }
                         }
                     }

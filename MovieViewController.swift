@@ -41,18 +41,18 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         let apiKey = "dagqdghwaq3e3mxyrp7kmmj5"
         
         let url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=\(apiKey)&limit=20")!
-        let request = NSURLRequest(URL: url)
+        let request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
+        //let request = NSURLRequest(URL: url)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             
             if let _ = error {
+                print("SEE and ERRROR!")
                 self.alertMessage = "Newtork Error!"
                 self.tableView.reloadData()
                 self.refreshControl.endRefreshing()
                 MBProgressHUD.hideAllHUDsForView(self.view, animated: true)
-                
                 return
             }
-            
             if let data = data {
                 let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(data, options: []) as? NSDictionary
                 if let responseDictionary = responseDictionary {
@@ -88,7 +88,6 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        print("not me!")
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         let movie = movies![indexPath.row]
         
@@ -96,7 +95,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         cell.synopsisLabel.text = movie["synopsis"] as? String
         
         let imageUrl = NSURL(string: movie.valueForKeyPath("posters.thumbnail") as! String)!
-        let imageUrlRequest = NSURLRequest(URL: imageUrl)
+        let imageUrlRequest = NSURLRequest(URL: imageUrl, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
         
         cell.posterView.setImageWithURLRequest(imageUrlRequest, placeholderImage: nil,
             success: {(req, res, image) -> Void in
@@ -108,7 +107,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
                 })
             },
             failure: {(req, res, err) -> Void in
-                NSLog("Image loading failed!!!!\(err)")
+                NSLog("Image loading failed!!!!")
             }
         )
         
@@ -118,7 +117,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let  alertHeaderCell = tableView.dequeueReusableCellWithIdentifier("AlertHeaderCell") as! AlertHederCell
-        //alertHeaderCell.backgroundColor = UIColor.cyanColor()
+        alertHeaderCell.accessoryType = UITableViewCellAccessoryType.None
         if let alertMessage = alertMessage {
             alertHeaderCell.messageLabel.text = alertMessage
         }
@@ -126,8 +125,7 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        print(self.alertMessage)
-        if let _ = self.alertMessage {
+        if let _ = alertMessage {
             return 30.0
         }
         return 0.0
