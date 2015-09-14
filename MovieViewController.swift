@@ -12,18 +12,22 @@ import MBProgressHUD
 
 
 
-class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-
+    @IBOutlet weak var moviesSearchBar: UISearchBar!
+    
     var movies: [NSDictionary]?
+    var filteredMovies: [NSDictionary]?
     var refreshControl: UIRefreshControl!
     var alertMessage : String?
+    var searchActive : Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        moviesSearchBar.delegate = self
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         _addRefreshControl()
         _fetchMovies()
@@ -80,16 +84,27 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let movies = movies {
-            return movies.count
+        if searchActive {
+            if let filteredMovies = filteredMovies {
+                return filteredMovies.count
+            }
+        } else {
+            if let movies = movies {
+                return movies.count
+            }
         }
+        
         return 0;
     }
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
-        let movie = movies![indexPath.row]
+        var movie = movies![indexPath.row]
+        if searchActive {
+            movie = filteredMovies![indexPath.row]
+        }
         
         cell.titleLabel.text = movie["title"] as? String
         cell.synopsisLabel.text = movie["synopsis"] as? String
@@ -132,12 +147,49 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     
+    func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+        searchActive = true;
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchActive = false;
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        filteredMovies = movies?.filter({ (movie) -> Bool in
+            let movieTitle: NSString? = movie["title"] as? NSString
+            if let movieTitle = movieTitle {
+                let range = movieTitle.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+                return range.location != NSNotFound
+            }
+            return false
+        })
+        if(filteredMovies?.count == 0){
+            searchActive = false;
+        } else {
+            searchActive = true;
+        }
+        self.tableView.reloadData()
+    }
+
+    
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let cell = sender as! UITableViewCell
         let indexPath = tableView.indexPathForCell(cell)!
-        
-        let movie = movies![indexPath.row]
+        var movie = movies![indexPath.row]
+        if searchActive {
+            movie = filteredMovies![indexPath.row]
+        }
         let movieDetailsController = segue.destinationViewController as! MovieDetailsViewController
         movieDetailsController.movie = movie
     }
