@@ -73,7 +73,7 @@
                                         <rect key="frame" x="0.0" y="28" width="326" height="29"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.5" contentMode="center" tableViewCell="IvP-So-uzg" id="fmn-xw-VKH">
-                                            <rect key="frame" x="0.0" y="0.0" width="293" height="28.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="293" height="29"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gfP-7A-q8g">
@@ -94,11 +94,11 @@
                                         <rect key="frame" x="0.0" y="57" width="326" height="86"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ibQ-DB-58t" id="fvf-3F-CbY">
-                                            <rect key="frame" x="0.0" y="0.0" width="293" height="85.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="293" height="86"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Wr6-hJ-64W">
-                                                    <rect key="frame" x="86" y="19" width="240" height="69.5"/>
+                                                    <rect key="frame" x="86" y="19" width="240" height="70"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -112,7 +112,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="dWp-o3-mr3">
-                                                    <rect key="frame" x="0.0" y="8" width="78" height="76.5"/>
+                                                    <rect key="frame" x="0.0" y="8" width="78" height="77"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
