@@ -185,8 +185,10 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let cell = sender as! UITableViewCell
         let indexPath = tableView.indexPathForCell(cell)!
-        
-        let movie = movies![indexPath.row]
+        var movie = movies![indexPath.row]
+        if searchActive {
+            movie = filteredMovies![indexPath.row]
+        }
         let movieDetailsController = segue.destinationViewController as! MovieDetailsViewController
         movieDetailsController.movie = movie
     }
