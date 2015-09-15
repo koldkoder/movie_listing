@@ -28,10 +28,10 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.dataSource = self
         tableView.delegate = self
         moviesSearchBar.delegate = self
+        _customizeNavBar()
         MBProgressHUD.showHUDAddedTo(self.view, animated: true)
         _addRefreshControl()
         _fetchMovies()
-
     }
     
     func _addRefreshControl() {
@@ -81,6 +81,13 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         
     }
 
+
+    func _customizeNavBar() {
+        navigationController?.navigationBar.tintColor = UIColor.whiteColor()
+        navigationController?.navigationBar.barTintColor = UIColor.redColor()
+        navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.whiteColor()]
+    }
+ 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

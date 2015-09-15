@@ -12,6 +12,7 @@ class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var posterImageView: UIImageView!
     @IBOutlet weak var synopsisLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var movieDetailNavItem: UINavigationItem!
     
     var movie : NSDictionary!
     
@@ -19,15 +20,19 @@ class MovieDetailsViewController: UIViewController {
         super.viewDidLoad()
         _displayMovieDetail()
     }
+ 
     
     func _displayMovieDetail() {
         titleLabel.text = movie["title"] as? String
         synopsisLabel.text = movie["synopsis"] as? String
+        movieDetailNavItem.title = movie["title"] as? String
+        
         let imageUrl = NSURL(string: movie.valueForKeyPath("posters.thumbnail") as! String)!
         posterImageView.setImageWithURL(imageUrl)
         _displayHighResolutionImageUrl()
         
     }
+    
 
     func _displayHighResolutionImageUrl() {
         let alternateIds = movie["alternate_ids"] as? NSDictionary
