@@ -10,11 +10,13 @@ import UIKit
 
 class MovieDetailsViewController: UIViewController {
     @IBOutlet weak var posterImageView: UIImageView!
-    @IBOutlet weak var synopsisLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var movieDetailTextView: UITextView!
     @IBOutlet weak var movieDetailNavItem: UINavigationItem!
     
     var movie : NSDictionary!
+    var popUpTextPosition: CGRect?
+    var popDownTextPosition:CGRect?
+    var texViewUp = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,13 +25,17 @@ class MovieDetailsViewController: UIViewController {
  
     
     func _displayMovieDetail() {
-        titleLabel.text = movie["title"] as? String
-        synopsisLabel.text = movie["synopsis"] as? String
+       
+        movieDetailTextView.text = movie["synopsis"] as? String
         movieDetailNavItem.title = movie["title"] as? String
-        
+        texViewUp = false
+        _setPopupPositions()
+        _addGestures()
         let imageUrl = NSURL(string: movie.valueForKeyPath("posters.thumbnail") as! String)!
         posterImageView.setImageWithURL(imageUrl)
         _displayHighResolutionImageUrl()
+        
+
         
     }
     
@@ -71,14 +77,34 @@ class MovieDetailsViewController: UIViewController {
         }
     }
     
-    func _delay(delay:Double, closure:()->()) {
-        dispatch_after(
-            dispatch_time(
-                DISPATCH_TIME_NOW,
-                Int64(delay * Double(NSEC_PER_SEC))
-            ),
-            dispatch_get_main_queue(), closure)
+    func _setPopupPositions() {
+        popDownTextPosition = movieDetailTextView.frame
+        let contentHeight = movieDetailTextView.contentSize.height
+        let popupWidth = movieDetailTextView.frame.width
+        let popupHeight = contentHeight < view.frame.height * 0.6 ? contentHeight : view.frame.height * 0.6
+        let popupOriginY = view.frame.height - popupHeight
+        let popupOriginX = movieDetailTextView.frame.origin.x
+        popUpTextPosition = CGRectMake(popupOriginX, popupOriginY, popupWidth, popupHeight)
     }
+    
+    func _addGestures() {
+        let tapGuesture = UITapGestureRecognizer(target: self, action: "_slideTextView")
+        movieDetailTextView.addGestureRecognizer(tapGuesture)
+    }
+    
+    
+    func _slideTextView() {
+        var targetPostion = popUpTextPosition
+        
+        if (texViewUp) {
+            targetPostion = popDownTextPosition
+        }
+        UIView.animateWithDuration(1, delay:0, usingSpringWithDamping: 1.0, initialSpringVelocity: 5.0, options: UIViewAnimationOptions.CurveLinear, animations:({
+            self.movieDetailTextView.frame = targetPostion!
+        }),completion: nil)
+        texViewUp = !texViewUp
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
