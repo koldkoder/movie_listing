@@ -154,7 +154,10 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         return 0.0
     }
-
+    
+    /*func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }*/
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
         searchActive = true;
