@@ -48,7 +48,6 @@ class MovieDetailsViewController: UIViewController {
                         if let imageUrl = imageUrl {
                             let highResImageUrl = NSURL(string: imageUrl)!
                             let highResImageUrlRequest = NSURLRequest(URL: highResImageUrl, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
-                            self._delay(0.5) {
                                 self.posterImageView.setImageWithURLRequest(highResImageUrlRequest, placeholderImage: nil, success: { (req, res, image) -> Void in
                                     self.posterImageView.image = image
                                     self.posterImageView.alpha = 0.3
@@ -58,7 +57,7 @@ class MovieDetailsViewController: UIViewController {
                                     }, failure: { (req, res, err) -> Void in
                                     NSLog("Error loading high res poster")
                                 })
-                            }
+                            
                         }
                     }
                 }

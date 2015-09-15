@@ -12,7 +12,7 @@ import MBProgressHUD
 
 
 
-class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,UISearchBarDelegate {
+class MovieViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var moviesSearchBar: UISearchBar!
@@ -46,11 +46,14 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
         
         let url = NSURL(string: "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/box_office.json?apikey=\(apiKey)&limit=20")!
         let request = NSURLRequest(URL: url, cachePolicy: NSURLRequestCachePolicy.ReturnCacheDataElseLoad, timeoutInterval: 60)
-        //let request = NSURLRequest(URL: url)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+            if let httpResponse = response as? NSHTTPURLResponse {
+                if httpResponse.statusCode != 200 {
+                    self.alertMessage = "Network Error"
+                }
+            }
             
             if let _ = error {
-                print("SEE and ERRROR!")
                 self.alertMessage = "Newtork Error!"
                 self.tableView.reloadData()
                 self.refreshControl.endRefreshing()
@@ -99,7 +102,6 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         var movie = movies![indexPath.row]
         if searchActive {
@@ -164,7 +166,6 @@ class MovieViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        
         filteredMovies = movies?.filter({ (movie) -> Bool in
             let movieTitle: NSString? = movie["title"] as? NSString
             if let movieTitle = movieTitle {
