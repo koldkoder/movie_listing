@@ -25,8 +25,8 @@ Time spent: `<Number of hours spent>`
 - [X] Add a search bar: pretty simple implementation of searching against the existing table view data.
 
 ### Walkthrough
-![Video Walkthrough](https://raw.githubusercontent.com/koldkoder/movie_listing/master/rotten_tomatoes.gif)
-
+![Video Walkthrough](rotten_tomatoes.gif)
+![Video Walkthrough - Error](rotten_tomatoes_nw_error.gif)
 Credits
 ---------
 * [Rotten Tomatoes API](http://developer.rottentomatoes.com/docs/read/JSON)
